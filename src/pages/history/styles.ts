@@ -50,6 +50,7 @@ export const HistoryList = styled.div`
       }
       &:last-child {
         padding-right: 1.5rem;
+        cursor: pointer;
       }
     }
   }
@@ -78,4 +79,11 @@ export const Status = styled.span<StatusProps>`
     background-color: ${(props) =>
       props.theme[STATUS_COLORS[props.statusColor]]};
   }
+`
+
+export const ContainerEdit = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 `

@@ -1,7 +1,8 @@
+import { filter } from 'lodash'
 import { createContext, useState, ReactNode } from 'react'
 import { toast } from 'react-toastify'
 
-type Cycle = {
+export type Cycle = {
   id: string
   task: string
   minutesAmount: number
@@ -18,13 +19,19 @@ type NewCycleFormData = {
 interface CyclesContextType {
   activeCycle: Cycle | undefined
   activeCycleId: string | null
-  markCurrentCycleAsFinished: () => void
+  cycles: Cycle[]
   changeIdNull: () => void
   amountSecondsPassed: number
-  setAmountSecondsPassed: (seconds: number) => void
-  cycles: Cycle[]
-  createNewCycle: (data: NewCycleFormData) => void
   handleStopCycle: () => void
+  taskSelected: Cycle
+  isEditing: boolean
+  setIsEditing: (data: boolean) => void
+  setTaskSelected: (data: Cycle) => void
+  markCurrentCycleAsFinished: () => void
+  createNewCycle: (data: NewCycleFormData) => void
+  setAmountSecondsPassed: (seconds: number) => void
+  UpdateCycle: (id: string, data: NewCycleFormData) => void
+  deleteCycle: (id: string) => void
 }
 
 export const CyclesContext = createContext({} as CyclesContextType)
@@ -39,7 +46,13 @@ export const CyclesContextProvider = ({
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
-
+  const [taskSelected, setTaskSelected] = useState<Cycle>({
+    id: '',
+    task: '',
+    minutesAmount: 0,
+    startDate: new Date(),
+  })
+  const [isEditing, setIsEditing] = useState(false)
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
   function changeIdNull() {
@@ -85,6 +98,27 @@ export const CyclesContextProvider = ({
     setActiveCycleId(id)
     setAmountSecondsPassed(0)
   }
+
+  function UpdateCycle(id: string, data: NewCycleFormData) {
+    setCycles((state) =>
+      state.map((cycle) => {
+        if (cycle.id === id) {
+          return {
+            ...cycle,
+            ...data,
+            startDate: new Date(),
+          }
+        } else {
+          return cycle
+        }
+      }),
+    )
+    setActiveCycleId(id)
+    setAmountSecondsPassed(0)
+  }
+  function deleteCycle(id: string) {
+    setCycles((state) => filter(state, (cycle) => cycle.id !== id))
+  }
   return (
     <CyclesContext.Provider
       value={{
@@ -97,6 +131,12 @@ export const CyclesContextProvider = ({
         setAmountSecondsPassed,
         createNewCycle,
         handleStopCycle,
+        UpdateCycle,
+        taskSelected,
+        setTaskSelected,
+        isEditing,
+        setIsEditing,
+        deleteCycle,
       }}
     >
       {children}

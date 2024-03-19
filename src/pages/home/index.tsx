@@ -11,8 +11,15 @@ import { CountDown } from './shared/countDouwn'
 import { CyclesContext } from '../../contexts/CyclesContext'
 
 export const Home: React.FC = () => {
-  const { activeCycle, handleStopCycle, createNewCycle } =
-    useContext(CyclesContext)
+  const {
+    activeCycle,
+    handleStopCycle,
+    createNewCycle,
+    isEditing,
+    taskSelected,
+    UpdateCycle,
+    setIsEditing,
+  } = useContext(CyclesContext)
 
   const schema = zod.object({
     task: zod.string().min(1, 'Informe a tarefa'),
@@ -26,13 +33,20 @@ export const Home: React.FC = () => {
   })
 
   type NewCycleFormData = zod.infer<typeof schema>
+  const initialValues = {
+    task: '',
+    minutesAmount: 0,
+  }
+  const defaultValues: NewCycleFormData = isEditing
+    ? {
+        task: taskSelected.task,
+        minutesAmount: taskSelected.minutesAmount,
+      }
+    : initialValues
 
   const cycleForm = useForm<NewCycleFormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      task: '',
-      minutesAmount: 0,
-    },
+    defaultValues,
   })
 
   const {
@@ -52,9 +66,8 @@ export const Home: React.FC = () => {
   }, [errors])
 
   const onSubmit = (data: NewCycleFormData) => {
-    console.log('data', data)
-    createNewCycle(data)
-    reset()
+    isEditing ? UpdateCycle(taskSelected.id, data) : createNewCycle(data)
+    reset(initialValues)
   }
 
   return (
@@ -83,9 +96,16 @@ export const Home: React.FC = () => {
             Começar
           </StartButton>
         ) : (
-          <StopButton type="submit" onClick={handleStopCycle}>
+          <StopButton
+            type="submit"
+            onClick={() => {
+              handleStopCycle()
+              setIsEditing(false)
+              reset(initialValues)
+            }}
+          >
             <HandPalm size={24} />
-            Interromper
+            Pausar
           </StopButton>
         )}
       </form>
