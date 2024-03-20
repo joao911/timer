@@ -32,6 +32,8 @@ interface CyclesContextType {
   setAmountSecondsPassed: (seconds: number) => void
   UpdateCycle: (id: string, data: NewCycleFormData) => void
   deleteCycle: (id: string) => void
+  setActiveCycleId: (id: string | null) => void
+  setCycles: (data: Cycle[] | ((state: Cycle[]) => Cycle[])) => void
 }
 
 export const CyclesContext = createContext({} as CyclesContextType)
@@ -107,6 +109,7 @@ export const CyclesContextProvider = ({
             ...cycle,
             ...data,
             startDate: new Date(),
+            interruptedDate: undefined,
           }
         } else {
           return cycle
@@ -137,6 +140,8 @@ export const CyclesContextProvider = ({
         isEditing,
         setIsEditing,
         deleteCycle,
+        setActiveCycleId,
+        setCycles,
       }}
     >
       {children}

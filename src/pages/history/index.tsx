@@ -8,8 +8,15 @@ import { Pencil, Trash } from 'phosphor-react'
 import { useNavigate } from 'react-router-dom'
 
 export const History: React.FC = () => {
-  const { cycles, setTaskSelected, setIsEditing, deleteCycle } =
-    useContext(CyclesContext)
+  const {
+    cycles,
+    setTaskSelected,
+    setIsEditing,
+    deleteCycle,
+    setActiveCycleId,
+    setCycles,
+    activeCycleId,
+  } = useContext(CyclesContext)
   const navigate = useNavigate()
 
   function differenceInMinutesFromStartTaskToInterruptedTasks(
@@ -32,6 +39,16 @@ export const History: React.FC = () => {
           minutesAmount: taskSelected.minutesAmount - differenceMinutes,
           startDate: new Date(),
         },
+      )
+      setActiveCycleId(null)
+      setCycles((state: Cycle[]) =>
+        state.map((cycle) => {
+          if (cycle.id === activeCycleId) {
+            return { ...cycle, interruptedDate: new Date() }
+          } else {
+            return cycle
+          }
+        }),
       )
       setIsEditing(true)
       navigate('/')
