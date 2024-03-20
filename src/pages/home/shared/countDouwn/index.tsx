@@ -1,12 +1,8 @@
 import React from 'react'
 import { CountDownContainer, Separator } from './styles'
-
-type CountDownProps = {
-  minutes: string
-  seconds: string
-}
-
-export const CountDown: React.FC<CountDownProps> = ({ minutes, seconds }) => {
+import { useCount } from './useCountDouwn'
+export const CountDown: React.FC = () => {
+  const { minutes, seconds } = useCount()
   return (
     <CountDownContainer>
       <span>{minutes[0]}</span>

@@ -45,7 +45,7 @@ export const HistoryList = styled.div`
       font-size: 0.875rem;
       line-height: 1.6;
       &:first-child {
-        width: 50%;
+        width: 40%;
         padding: 1.5rem;
       }
       &:last-child {
@@ -78,4 +78,11 @@ export const Status = styled.span<StatusProps>`
     background-color: ${(props) =>
       props.theme[STATUS_COLORS[props.statusColor]]};
   }
+`
+
+export const ContainerEdit = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 `
