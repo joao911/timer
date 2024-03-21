@@ -26,7 +26,7 @@ export const History: React.FC = () => {
           <tbody>
             {map(cycles, (cycle) => {
               return (
-                <tr>
+                <tr key={cycle.id}>
                   <td>{cycle.task}</td>
                   <td>{cycle.minutesAmount} minutos</td>
                   <td>

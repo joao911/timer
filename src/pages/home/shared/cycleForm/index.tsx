@@ -28,7 +28,6 @@ export const CycleForm: React.FC = () => {
         type="number"
         id="minutesAmount"
         placeholder="00"
-        step={5}
         {...register('minutesAmount', { valueAsNumber: true })}
         disabled={!!activeCycle}
       />

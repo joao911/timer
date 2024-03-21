@@ -28,19 +28,18 @@ export const useHome = () => {
     minutesAmount: 0,
   }
 
+  const defaultValuesTaskSelected = {
+    task: taskSelected?.task ?? '',
+    minutesAmount: taskSelected?.minutesAmount ?? 0,
+  }
+
   const defaultValues: NewCycleFormData = isEditing
-    ? {
-        task: taskSelected.task,
-        minutesAmount: taskSelected.minutesAmount,
-      }
+    ? defaultValuesTaskSelected
     : initialValues
 
   const cycleForm = useForm<NewCycleFormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      task: '',
-      minutesAmount: 0,
-    },
+    defaultValues,
   })
 
   const {
@@ -74,6 +73,8 @@ export const useHome = () => {
   }
 
   function updateCycle(id: string, data: NewCycleFormData) {
+    dispatch.cycles.setActiveCycleId(id)
+    dispatch.cycles.setAmountSecondsPassed(0)
     dispatch.cycles.setCycles(
       map(cycles, (cycle) => {
         if (cycle.id === id) {
@@ -98,7 +99,11 @@ export const useHome = () => {
   }
 
   const onSubmit = (data: NewCycleFormData) => {
-    isEditing ? createNewCycle(data) : handleUpdateCycle(data)
+    if (isEditing) {
+      handleUpdateCycle(data)
+    } else {
+      createNewCycle(data)
+    }
   }
 
   function handleStopCycle() {
@@ -113,6 +118,7 @@ export const useHome = () => {
           }
         }),
       )
+      reset(initialValues)
       toast.success('Ciclo interrompido com sucesso')
     }
   }
