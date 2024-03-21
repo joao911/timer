@@ -1,8 +1,6 @@
 import React from 'react'
 import { HistoryContainer, HistoryList, Status } from './styles'
 
-// import { Container } from './styles';
-
 export const History: React.FC = () => {
   return (
     <HistoryContainer>
