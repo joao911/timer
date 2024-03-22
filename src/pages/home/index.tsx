@@ -1,18 +1,18 @@
-import React from 'react'
+import React from "react";
 
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { HomeContainer, StartButton, StopButton } from './styles'
-import { HandPalm, Play } from 'phosphor-react'
-import { CycleForm } from './shared/cycleForm'
-import { CountDown } from './shared/countDouwn'
-import { useCycles } from '../hooks'
-import { FormProvider } from 'react-hook-form'
-import { useHome } from './useHome'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { HomeContainer, StartButton, StopButton } from "./styles";
+import { HandPalm, Play } from "phosphor-react";
+import { CycleForm } from "./shared/cycleForm";
+import { CountDown } from "./shared/countDouwn";
+import { useCycles } from "../hooks";
+import { FormProvider } from "react-hook-form";
+import { useHome } from "./useHome";
 
 export const Home: React.FC = () => {
-  const { handleSubmit, onSubmit, cycleForm, handleStopCycle } = useHome()
-  const { activeCycle } = useCycles()
+  const { handleSubmit, onSubmit, cycleForm, handleStopCycle } = useHome();
+  const { activeCycle } = useCycles();
 
   return (
     <HomeContainer>
@@ -39,12 +39,12 @@ export const Home: React.FC = () => {
             Começar
           </StartButton>
         ) : (
-          <StopButton type="submit" onClick={handleStopCycle}>
+          <StopButton onClick={handleStopCycle}>
             <HandPalm size={24} />
             Interromper
           </StopButton>
         )}
       </form>
     </HomeContainer>
-  )
-}
+  );
+};

@@ -6,16 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { Cycle } from "../../store/types";
 import { useCycles } from "../hooks";
-import { map } from "lodash";
+
 export const useHome = () => {
   const setActiveCycleId = useCyclesStore((state) => state.setActiveCycleId);
+  const { activeCycle } = useCycles();
+
   const setAmountSecondsPassed = useCyclesStore(
     (state) => state.setAmountSecondsPassed
   );
   const addNewCycle = useCyclesStore((state) => state.addNewCycle);
   const updateCycles = useCyclesStore((state) => state.updateCycles);
-  const { activeCycle } = useCycles();
-  const { activeCycleId, cycles } = useCyclesStore();
 
   const schema = zod.object({
     task: zod.string().min(1, "Informe a tarefa"),
@@ -69,14 +69,10 @@ export const useHome = () => {
   }
 
   function handleStopCycle() {
-    // if (activeCycle) {
-    //   const cycleToUpdate = map(cycles , (item)=> item === activeCycle)
-    //   updateCycles()
-    // }
+    console.log("click");
   }
 
   const onSubmit = (data: NewCycleFormData) => {
-    console.log("data", data);
     createNewCycle(data);
   };
 

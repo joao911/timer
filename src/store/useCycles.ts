@@ -4,7 +4,6 @@ import { filter, map } from 'lodash'
 
 export const useCyclesStore = create<CyclesContextType>((set) => ({
   cycles: [] as Cycle[],
-
   activeCycleId: null,
   changeIdNull: () => set({ activeCycleId: null }),
   amountSecondsPassed: 0,
@@ -27,11 +26,10 @@ export const useCyclesStore = create<CyclesContextType>((set) => ({
       cycles: filter(state.cycles, (item) => item.id !== id),
     })),
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setAmountSecondsPassed: (seconds: number) => {},
+  setAmountSecondsPassed: (seconds: number) =>
+    set({ amountSecondsPassed: seconds }),
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   UpdateCycle: (id: string, data: NewCycleFormData) => {},
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setActiveCycleId: (id: string | null) => {},
+  setActiveCycleId: (id: string | null) => set({ activeCycleId: id }),
 }))

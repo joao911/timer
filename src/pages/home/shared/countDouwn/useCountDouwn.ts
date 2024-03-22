@@ -8,8 +8,7 @@ export const useCountDown = () => {
   const { activeCycle } = useCycles()
 
   const { activeCycleId, amountSecondsPassed } = useCyclesStore()
-
-  const setCycles = useCyclesStore((state) => state.setCycles)
+  const updateCycles = useCyclesStore((state) => state.updateCycles)
   const setActiveCycleId = useCyclesStore((state) => state.setActiveCycleId)
   const setAmountSecondsPassed = useCyclesStore(
     (state) => state.setAmountSecondsPassed,
@@ -25,46 +24,42 @@ export const useCountDown = () => {
   const minutes = String(minutesAmount).padStart(2, '0')
   const seconds = String(secondsAmount).padStart(2, '0')
 
-  // useEffect(() => {
-  //   let interval: number
-  //   if (activeCycle) {
-  //     interval = setInterval(() => {
-  //       const difference = differenceInSeconds(
-  //         new Date(),
-  //         new Date(activeCycle.startDate),
-  //       )
+  useEffect(() => {
+    let interval: number
+    if (activeCycle) {
+      interval = setInterval(() => {
+        const difference = differenceInSeconds(
+          new Date(),
+          new Date(activeCycle.startDate),
+        )
 
-  //       if (difference >= totalSeconds) {
-  //         setCycles((state) =>
-  //           state.map((cycle) => {
-  //             if (cycle.id === activeCycleId) {
-  //               return { ...cycle, finishedDate: new Date() }
-  //             } else {
-  //               return cycle
-  //             }
-  //           }),
-  //         )
+        if (difference >= totalSeconds) {
+          const updatedActiveCycle = {
+            ...activeCycle,
+            finishedDate: new Date(),
+          }
+          updateCycles(updatedActiveCycle)
 
-  //         toast.success('Ciclo concluído com sucesso')
-  //         setActiveCycleId(null)
-  //         clearInterval(interval)
-  //       } else {
-  //         setAmountSecondsPassed(difference)
-  //       }
-  //     }, 1000) as unknown as number
-  //   }
+          toast.success('Ciclo concluído com sucesso')
+          setActiveCycleId(null)
+          clearInterval(interval)
+        } else {
+          setAmountSecondsPassed(difference)
+        }
+      }, 1000) as unknown as number
+    }
 
-  //   return () => {
-  //     clearInterval(interval)
-  //   }
-  // }, [
-  //   activeCycle,
-  //   activeCycleId,
-  //   totalSeconds,
-  //   setAmountSecondsPassed,
-  //   setCycles,
-  //   setActiveCycleId,
-  // ])
+    return () => {
+      clearInterval(interval)
+    }
+  }, [
+    activeCycle,
+    activeCycleId,
+    totalSeconds,
+    setAmountSecondsPassed,
+    setActiveCycleId,
+    updateCycles,
+  ])
 
   useEffect(() => {
     if (activeCycle) {
@@ -73,8 +68,6 @@ export const useCountDown = () => {
       document.title = 'Ignite Timer'
     }
   }, [minutes, seconds, activeCycle])
-
-  console.log('activeCycle', activeCycle)
 
   return { minutes, seconds }
 }
