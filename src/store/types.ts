@@ -26,7 +26,9 @@ export interface CyclesContextType {
   // createNewCycle: (data: NewCycleFormData) => void
   setAmountSecondsPassed: (seconds: number) => void
   UpdateCycle: (id: string, data: NewCycleFormData) => void
-  deleteCycle: (id: string) => void
+  // deleteCycle: (id: string) => void
   setActiveCycleId: (id: string | null) => void
-  setCycles: (cycle: Cycle) => void
+  addNewCycle: (cycle: Cycle) => void
+  updateCycles: (cycle: Cycle) => void
+  deleteCycle: (id: string) => void
 }

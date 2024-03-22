@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 import { CyclesContextType, Cycle, NewCycleFormData } from './types'
+import { filter, map } from 'lodash'
 
 export const useCyclesStore = create<CyclesContextType>((set) => ({
   cycles: [] as Cycle[],
-  setCycles: (cycle) => set((state) => ({ cycles: [...state.cycles, cycle] })),
+
   activeCycleId: null,
   changeIdNull: () => set({ activeCycleId: null }),
   amountSecondsPassed: 0,
@@ -13,14 +14,24 @@ export const useCyclesStore = create<CyclesContextType>((set) => ({
   setIsEditing: (data: boolean) => set({ isEditing: data }),
   setTaskSelected: (data: Cycle) => set({ taskSelected: data }),
   markCurrentCycleAsFinished: () => {},
+  addNewCycle: (cycle: Cycle) =>
+    set((state) => ({ cycles: [...state.cycles, cycle] })),
+  updateCycles: (cycle: Cycle) =>
+    set((state) => ({
+      cycles: map(state.cycles, (item) =>
+        item.id === cycle.id ? cycle : item,
+      ),
+    })),
+  deleteCycle: (id: string) =>
+    set((state) => ({
+      cycles: filter(state.cycles, (item) => item.id !== id),
+    })),
 
-  // createNewCycle: (data: NewCycleFormData) => {},
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setAmountSecondsPassed: (seconds: number) => {},
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   UpdateCycle: (id: string, data: NewCycleFormData) => {},
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  deleteCycle: (id: string) => {},
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setActiveCycleId: (id: string | null) => {},
 }))
