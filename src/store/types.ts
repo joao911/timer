@@ -23,12 +23,11 @@ export interface CyclesContextType {
   setIsEditing: (data: boolean) => void
   setTaskSelected: (data: Cycle) => void
   markCurrentCycleAsFinished: () => void
-  // createNewCycle: (data: NewCycleFormData) => void
   setAmountSecondsPassed: (seconds: number) => void
-  UpdateCycle: (id: string, data: NewCycleFormData) => void
-  // deleteCycle: (id: string) => void
   setActiveCycleId: (id: string | null) => void
   addNewCycle: (cycle: Cycle) => void
   updateCycles: (cycle: Cycle) => void
   deleteCycle: (id: string) => void
+  cycleSelected: Cycle
+  setCycleSelected: (cycle: Cycle) => void
 }

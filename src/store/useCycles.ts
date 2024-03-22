@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { CyclesContextType, Cycle, NewCycleFormData } from './types'
+import { CyclesContextType, Cycle } from './types'
 import { filter, map } from 'lodash'
 
 export const useCyclesStore = create<CyclesContextType>((set) => ({
@@ -25,11 +25,9 @@ export const useCyclesStore = create<CyclesContextType>((set) => ({
     set((state) => ({
       cycles: filter(state.cycles, (item) => item.id !== id),
     })),
-
   setAmountSecondsPassed: (seconds: number) =>
     set({ amountSecondsPassed: seconds }),
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  UpdateCycle: (id: string, data: NewCycleFormData) => {},
-
   setActiveCycleId: (id: string | null) => set({ activeCycleId: id }),
+  cycleSelected: {} as Cycle,
+  setCycleSelected: (cycleSelected: Cycle) => set({ cycleSelected }),
 }))

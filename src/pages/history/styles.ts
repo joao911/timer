@@ -79,3 +79,9 @@ export const Status = styled.span<StatusProps>`
       props.theme[STATUS_COLORS[props.statusColor]]};
   }
 `
+export const ContainerEdit = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+`
