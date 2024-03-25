@@ -44,7 +44,7 @@ export const useCount = () => {
         } else {
           dispatch.cycles.setAmountSecondsPassed(difference)
         }
-      }, 1000)
+      }, 1000) as unknown as number
     }
 
     return () => {
