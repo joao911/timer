@@ -69,5 +69,9 @@ export const useCountDown = () => {
     }
   }, [minutes, seconds, activeCycle])
 
+  useEffect(() => {
+    console.log('activeCycle: ', activeCycle)
+  }, [activeCycle])
+
   return { minutes, seconds }
 }

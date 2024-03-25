@@ -8,21 +8,23 @@ import { Cycle } from '../../store/types'
 import { useCycles } from '../hooks'
 
 export const useHome = () => {
-  const setActiveCycleId = useCyclesStore((state) => state.setActiveCycleId)
   const { activeCycle } = useCycles()
+  const { cycleSelected, isEditing } = useCyclesStore()
 
   const setAmountSecondsPassed = useCyclesStore(
     (state) => state.setAmountSecondsPassed,
   )
   const addNewCycle = useCyclesStore((state) => state.addNewCycle)
   const updateCycles = useCyclesStore((state) => state.updateCycles)
+  const setActiveCycleId = useCyclesStore((state) => state.setActiveCycleId)
+  const setIsEditing = useCyclesStore((state) => state.setIsEditing)
 
   const schema = zod.object({
     task: zod.string().min(1, 'Informe a tarefa'),
     minutesAmount: zod
       .number()
-      .min(5, 'O ciclo precisa ser de no minimo 5 minutos')
-      .max(60, 'O ciclo precisa ser de no maximo 60 minutos')
+      .min(5, 'O ciclo precisa ser de no mínimo 5 minutos')
+      .max(60, 'O ciclo precisa ser de no máximo 60 minutos')
       .refine((val) => val !== undefined, {
         message: 'Preencha esse campo',
       }),
@@ -30,12 +32,21 @@ export const useHome = () => {
 
   type NewCycleFormData = zod.infer<typeof schema>
 
+  const defaultValuesDefault = {
+    task: '',
+    minutesAmount: 0,
+  }
+
+  const defaultValuesWithCycleSelected = {
+    task: cycleSelected?.task,
+    minutesAmount: cycleSelected?.minutesAmount,
+  }
+
   const cycleForm = useForm<NewCycleFormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      task: '',
-      minutesAmount: 0,
-    },
+    defaultValues: isEditing
+      ? defaultValuesWithCycleSelected
+      : defaultValuesDefault,
   })
 
   const {
@@ -65,7 +76,22 @@ export const useHome = () => {
     addNewCycle(newCycle)
     setActiveCycleId(id)
     setAmountSecondsPassed(0)
-    reset()
+  }
+
+  function editCycle(data: NewCycleFormData) {
+    console.log('cai aqui')
+    if (cycleSelected) {
+      const updatedActiveCycle = {
+        ...cycleSelected,
+        task: data.task,
+        minutesAmount: data.minutesAmount,
+        startDate: new Date(),
+      }
+      updateCycles(updatedActiveCycle)
+      setActiveCycleId(cycleSelected.id)
+
+      toast.success('Ciclo atualizado com sucesso')
+    }
   }
 
   function handleStopCycle() {
@@ -78,12 +104,15 @@ export const useHome = () => {
 
       toast.error('Ciclo interrompido com sucesso')
       setActiveCycleId(null)
-      reset()
+      setIsEditing(false)
+      reset(defaultValuesDefault)
     }
   }
 
   const onSubmit = (data: NewCycleFormData) => {
-    createNewCycle(data)
+    isEditing ? editCycle(data) : createNewCycle(data)
+    setIsEditing(false)
+    reset(defaultValuesDefault)
   }
 
   return { handleSubmit, onSubmit, cycleForm, handleStopCycle }

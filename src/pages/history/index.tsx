@@ -2,23 +2,26 @@ import React from 'react'
 import { map } from 'lodash'
 import { useStory } from './useStory'
 import { ptBR } from 'date-fns/locale'
-import { Pencil } from 'phosphor-react'
+import { Pencil, Trash } from 'phosphor-react'
 import { formatDistanceToNow } from 'date-fns'
 import { useCyclesStore } from '../../store/useCycles'
 import { HistoryContainer, HistoryList, Status, ContainerEdit } from './styles'
 
 export const History: React.FC = () => {
   const { cycles } = useCyclesStore()
-  const { updatedMinutesAmount } = useStory()
+  const { updatedMinutesAmount, handleDeleteCycle } = useStory()
   return (
     <HistoryContainer>
       <HistoryList>
         <table>
           <thead>
-            <th>Tarefa</th>
-            <th>Duração</th>
-            <th>Inicio</th>
-            <th>Status</th>
+            <tr>
+              <th>Tarefa</th>
+              <th>Duração</th>
+              <th>Inicio</th>
+              <th>Status</th>
+              <th>Status</th>
+            </tr>
           </thead>
           <tbody>
             {map(cycles, (item) => {
@@ -27,7 +30,6 @@ export const History: React.FC = () => {
                   <td>{item.task}</td>
                   <td>{item.minutesAmount} minutos</td>
                   <td>
-                    {' '}
                     {formatDistanceToNow(new Date(item.startDate), {
                       addSuffix: true,
                       locale: ptBR,
@@ -46,6 +48,11 @@ export const History: React.FC = () => {
                     {!item.finishedDate && !item.interruptedDate && (
                       <Status statusColor="yellow">Em andamento</Status>
                     )}
+                  </td>
+                  <td onClick={() => handleDeleteCycle(item.id)}>
+                    <ContainerEdit>
+                      <Trash size={24} />
+                    </ContainerEdit>
                   </td>
                 </tr>
               )

@@ -1,17 +1,19 @@
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 import { differenceInMinutes } from 'date-fns'
+
+import { useCycles } from '../hooks'
 import { Cycle } from '../../store/types'
 import { useCyclesStore } from '../../store/useCycles'
-import { useCycles } from '../hooks'
-import { useNavigate } from 'react-router-dom'
 
 export const useStory = () => {
   const navigate = useNavigate()
   const { activeCycle } = useCycles()
-  const { cycleSelected } = useCyclesStore()
   const updateCycles = useCyclesStore((state) => state.updateCycles)
   const setIsEditing = useCyclesStore((state) => state.setIsEditing)
   const setCycleSelected = useCyclesStore((state) => state.setCycleSelected)
   const setActiveCycleId = useCyclesStore((state) => state.setActiveCycleId)
+  const deleteCycle = useCyclesStore((state) => state.deleteCycle)
 
   function diferenceInMinutesFromStartTaskAndInterruptedTask(
     startDate: Date,
@@ -28,8 +30,8 @@ export const useStory = () => {
           task.interruptedDate,
         )
       setCycleSelected({
-        ...cycleSelected,
-        minutesAmount: cycleSelected.minutesAmount - differenceMinutes,
+        ...task,
+        minutesAmount: task.minutesAmount - differenceMinutes,
         startDate: new Date(),
       })
       setActiveCycleId(null)
@@ -40,9 +42,15 @@ export const useStory = () => {
         }
         updateCycles(updatedActiveCycle)
       }
-      setIsEditing(false)
+      setIsEditing(true)
       navigate('/')
     }
   }
-  return { updatedMinutesAmount }
+
+  function handleDeleteCycle(id: string) {
+    deleteCycle(id)
+    setIsEditing(false)
+    toast.done('Ciclo excluído com sucesso')
+  }
+  return { updatedMinutesAmount, handleDeleteCycle }
 }
