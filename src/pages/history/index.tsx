@@ -20,7 +20,7 @@ export const History: React.FC = () => {
               <th>Duração</th>
               <th>Inicio</th>
               <th>Status</th>
-              <th>Status</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
