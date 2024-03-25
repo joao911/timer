@@ -79,7 +79,6 @@ export const useHome = () => {
   }
 
   function editCycle(data: NewCycleFormData) {
-    console.log('cai aqui')
     if (cycleSelected) {
       const updatedActiveCycle = {
         ...cycleSelected,

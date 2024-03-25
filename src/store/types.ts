@@ -22,7 +22,6 @@ export interface CyclesContextType {
   isEditing: boolean
   setIsEditing: (data: boolean) => void
   setTaskSelected: (data: Cycle) => void
-  markCurrentCycleAsFinished: () => void
   setAmountSecondsPassed: (seconds: number) => void
   setActiveCycleId: (id: string | null) => void
   addNewCycle: (cycle: Cycle) => void

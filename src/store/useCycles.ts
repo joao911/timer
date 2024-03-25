@@ -12,7 +12,6 @@ export const useCyclesStore = create<CyclesContextType>((set) => ({
   isEditing: false,
   setIsEditing: (data: boolean) => set({ isEditing: data }),
   setTaskSelected: (data: Cycle) => set({ taskSelected: data }),
-  markCurrentCycleAsFinished: () => {},
   addNewCycle: (cycle: Cycle) =>
     set((state) => ({ cycles: [...state.cycles, cycle] })),
   updateCycles: (cycle: Cycle) =>
