@@ -7,6 +7,24 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  ::-webkit-scrollbar {
+    width: 8px; 
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* Cor do controle deslizante */
+    border-radius: 5px;
+
+    /* Efeitos ao passar o mouse */
+    &:hover {
+      background: #555; /* Cor do controle deslizante ao passar o mouse */
+    }
+  }
+
   :focus {
     outline: none;
     box-shadow: 0 0 0 2px ${(props) => props.theme['green-500']};

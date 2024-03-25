@@ -1,59 +1,13 @@
-import React, { useContext } from 'react'
-import { ContainerEdit, HistoryContainer, HistoryList, Status } from './styles'
-import { Cycle, CyclesContext } from '../../contexts/CyclesContext'
+import React from 'react'
 import { map } from 'lodash'
-import { formatDistanceToNow, differenceInMinutes } from 'date-fns'
+import { useStory } from './useStory'
 import { ptBR } from 'date-fns/locale'
+import { formatDistanceToNow } from 'date-fns'
 import { Pencil, Trash } from 'phosphor-react'
-import { useNavigate } from 'react-router-dom'
+import { ContainerEdit, HistoryContainer, HistoryList, Status } from './styles'
 
 export const History: React.FC = () => {
-  const {
-    cycles,
-    setTaskSelected,
-    setIsEditing,
-    deleteCycle,
-    setActiveCycleId,
-    setCycles,
-    activeCycleId,
-  } = useContext(CyclesContext)
-  const navigate = useNavigate()
-
-  function differenceInMinutesFromStartTaskToInterruptedTasks(
-    startDate: Date,
-    endDate: Date,
-  ) {
-    return differenceInMinutes(new Date(endDate), new Date(startDate))
-  }
-
-  function updateMinutesAmount(taskSelected: Cycle) {
-    if (taskSelected.startDate && taskSelected.interruptedDate) {
-      const differenceMinutes =
-        differenceInMinutesFromStartTaskToInterruptedTasks(
-          taskSelected.startDate,
-          taskSelected.interruptedDate,
-        )
-      setTaskSelected(
-        taskSelected && {
-          ...taskSelected,
-          minutesAmount: taskSelected.minutesAmount - differenceMinutes,
-          startDate: new Date(),
-        },
-      )
-      setActiveCycleId(null)
-      setCycles((state: Cycle[]) =>
-        state.map((cycle) => {
-          if (cycle.id === activeCycleId) {
-            return { ...cycle, interruptedDate: new Date() }
-          } else {
-            return cycle
-          }
-        }),
-      )
-      setIsEditing(true)
-      navigate('/')
-    }
-  }
+  const { cycles, updateMinutesAmount, deleteCycle } = useStory()
 
   return (
     <HistoryContainer>
@@ -99,7 +53,9 @@ export const History: React.FC = () => {
                     )}
                   </td>
                   <td>
-                    <Trash size={24} onClick={() => deleteCycle(cycle.id)} />
+                    <ContainerEdit>
+                      <Trash size={24} onClick={() => deleteCycle(cycle.id)} />
+                    </ContainerEdit>
                   </td>
                 </tr>
               )
