@@ -123,5 +123,5 @@ export const useHome = () => {
     }
   }
 
-  return { onSubmit, cycleForm, handleSubmit, handleStopCycle }
+  return { onSubmit, cycleForm, handleSubmit, handleStopCycle, createNewCycle }
 }
