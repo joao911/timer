@@ -1,17 +1,5 @@
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timer Task Manager</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1, h2 { color: #333; }
-        p, ul { line-height: 1.6; }
-        a { color: #0275d8; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .section { margin-bottom: 20px; }
-    </style>
-</head>
+
 <body>
 
 <h1>Timer Task Manager</h1>
